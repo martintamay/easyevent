@@ -1,0 +1,49 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require material_kit
+ *= require owl.carousel
+ *= require owl.theme
+ *= require_tree .
+ *= require_self
+ */
+ .card .header-primary {
+    background: linear-gradient(179.43deg, #F44336 0.98%, #F95044 98.87%);
+}
+ .card .header-default {
+    background: grey;
+}
+.btn:not(.btn-raised).btn-primary, .input-group-btn .btn:not(.btn-raised).btn-primary {
+    color: #F44336;
+}
+
+.btn.btn-raised.btn-primary{
+	background-color: #F44336;
+}
+.btn.btn-raised.btn-grey{
+	background-color: grey;
+}
+.form-group.is-focused .form-control {
+  background-image: linear-gradient(#F44336, #F44336), linear-gradient(#D2D2D2, #D2D2D2)
+}
+
+.form-group.is-focused label.control-label {
+  color: #F44336;
+}
+
+.form-group .checkbox label, .form-group .radio label, .form-group label {
+    color: #f44336;
+}
+
+.card-nav-tabs{
+	margin-bottom: 20px;
+}

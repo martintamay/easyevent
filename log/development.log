@@ -1,0 +1,309 @@
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (1020.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "EasyEvent_development"[0m
+  [1m[35m (1140.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "EasyEvent_test"[0m
+  [1m[35m (21818.5ms)[0m  [1m[35mCREATE DATABASE "EasyEvent_development" ENCODING = 'unicode'[0m
+  [1m[35m (16052.9ms)[0m  [1m[35mCREATE DATABASE "EasyEvent_test" ENCODING = 'unicode'[0m
+  [1m[35mSQL (32.3ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (191.4ms)[0m  [1m[35mCREATE TABLE "event_categories" ("id" serial primary key, "nombre" character varying, "descripcion" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (174.8ms)[0m  [1m[35mCREATE TABLE "event_comments" ("id" serial primary key, "comentario" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer, "user_id" integer)[0m
+  [1m[35m (78.4ms)[0m  [1m[35mCREATE  INDEX  "index_event_comments_on_event_id" ON "event_comments" USING btree ("event_id")[0m
+  [1m[35m (55.9ms)[0m  [1m[35mCREATE  INDEX  "index_event_comments_on_user_id" ON "event_comments" USING btree ("user_id")[0m
+  [1m[35m (65.1ms)[0m  [1m[35mCREATE TABLE "event_dates" ("id" serial primary key, "fecha_inicio" timestamp, "fecha_fin" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer)[0m
+  [1m[35m (96.0ms)[0m  [1m[35mCREATE  INDEX  "index_event_dates_on_event_id" ON "event_dates" USING btree ("event_id")[0m
+  [1m[35m (108.4ms)[0m  [1m[35mCREATE TABLE "event_subscriptions" ("id" serial primary key, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer, "user_id" integer)[0m
+  [1m[35m (97.5ms)[0m  [1m[35mCREATE  INDEX  "index_event_subscriptions_on_event_id" ON "event_subscriptions" USING btree ("event_id")[0m
+  [1m[35m (74.5ms)[0m  [1m[35mCREATE  INDEX  "index_event_subscriptions_on_user_id" ON "event_subscriptions" USING btree ("user_id")[0m
+  [1m[35m (221.4ms)[0m  [1m[35mCREATE TABLE "event_tickets" ("id" serial primary key, "acceso" character varying, "cantidad" integer, "precio" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer)[0m
+  [1m[35m (80.1ms)[0m  [1m[35mCREATE  INDEX  "index_event_tickets_on_event_id" ON "event_tickets" USING btree ("event_id")[0m
+  [1m[35m (308.4ms)[0m  [1m[35mCREATE TABLE "event_types" ("id" serial primary key, "nombre" character varying, "descripcion" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (166.7ms)[0m  [1m[35mCREATE TABLE "events" ("id" serial primary key, "nombre" character varying, "ubicacion" character varying, "descripcion" character varying, "publico" boolean, "posposiciones" integer, "codigo" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "user_id" integer, "event_category_id" integer, "event_type_id" integer)[0m
+  [1m[35m (69.3ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_event_category_id" ON "events" USING btree ("event_category_id")[0m
+  [1m[35m (81.9ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_event_type_id" ON "events" USING btree ("event_type_id")[0m
+  [1m[35m (111.5ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_user_id" ON "events" USING btree ("user_id")[0m
+  [1m[35m (199.8ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "g_provider" character varying, "g_uid" character varying, "g_token" character varying, "g_expires_at" integer, "g_expires" boolean, "g_refresh_token" character varying, "f_provider" character varying, "f_uid" character varying, "f_name" character varying, "f_email" character varying, "g_email" character varying)[0m
+  [1m[35m (77.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users" USING btree ("email")[0m
+  [1m[35m (89.0ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users" USING btree ("reset_password_token")[0m
+  [1m[35m (49.2ms)[0m  [1m[35mALTER TABLE "event_comments" ADD CONSTRAINT "fk_rails_8a51827e60"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (2.4ms)[0m  [1m[35mALTER TABLE "event_comments" ADD CONSTRAINT "fk_rails_ecc9a36a75"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (3.3ms)[0m  [1m[35mALTER TABLE "event_dates" ADD CONSTRAINT "fk_rails_261ec9f0f8"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (2.9ms)[0m  [1m[35mALTER TABLE "event_subscriptions" ADD CONSTRAINT "fk_rails_570823d7e3"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "event_subscriptions" ADD CONSTRAINT "fk_rails_5fbb25ac5c"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (11.3ms)[0m  [1m[35mALTER TABLE "event_tickets" ADD CONSTRAINT "fk_rails_4f36be16a4"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (4.7ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_a0b385fce3"
+FOREIGN KEY ("event_category_id")
+  REFERENCES "event_categories" ("id")
+[0m
+  [1m[35m (2.6ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_75f14fef31"
+FOREIGN KEY ("event_type_id")
+  REFERENCES "event_types" ("id")
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_0cb5590091"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (191.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20190226185428)[0m
+  [1m[35m (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20190217181804),
+(2019022001810),
+(20190222003201),
+(20190222003303),
+(20190222003645),
+(20190222004055),
+(20190222004719),
+(20190222005257),
+(20190222005406),
+(20190223221956),
+(20190223222103),
+(20190223222224),
+(20190223222334),
+(20190223222535),
+(20190223223619),
+(20190223224347),
+(20190223224439),
+(20190225200450),
+(20190225200641);
+
+[0m
+  [1m[35m (151.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.8ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2019-03-01 06:47:45.269315"], ["updated_at", "2019-03-01 06:47:45.269315"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (4.6ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (143.5ms)[0m  [1m[35mCREATE TABLE "event_categories" ("id" serial primary key, "nombre" character varying, "descripcion" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (179.2ms)[0m  [1m[35mCREATE TABLE "event_comments" ("id" serial primary key, "comentario" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer, "user_id" integer)[0m
+  [1m[35m (105.2ms)[0m  [1m[35mCREATE  INDEX  "index_event_comments_on_event_id" ON "event_comments" USING btree ("event_id")[0m
+  [1m[35m (167.5ms)[0m  [1m[35mCREATE  INDEX  "index_event_comments_on_user_id" ON "event_comments" USING btree ("user_id")[0m
+  [1m[35m (185.7ms)[0m  [1m[35mCREATE TABLE "event_dates" ("id" serial primary key, "fecha_inicio" timestamp, "fecha_fin" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer)[0m
+  [1m[35m (218.4ms)[0m  [1m[35mCREATE  INDEX  "index_event_dates_on_event_id" ON "event_dates" USING btree ("event_id")[0m
+  [1m[35m (180.8ms)[0m  [1m[35mCREATE TABLE "event_subscriptions" ("id" serial primary key, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer, "user_id" integer)[0m
+  [1m[35m (205.1ms)[0m  [1m[35mCREATE  INDEX  "index_event_subscriptions_on_event_id" ON "event_subscriptions" USING btree ("event_id")[0m
+  [1m[35m (110.6ms)[0m  [1m[35mCREATE  INDEX  "index_event_subscriptions_on_user_id" ON "event_subscriptions" USING btree ("user_id")[0m
+  [1m[35m (277.0ms)[0m  [1m[35mCREATE TABLE "event_tickets" ("id" serial primary key, "acceso" character varying, "cantidad" integer, "precio" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "event_id" integer)[0m
+  [1m[35m (185.9ms)[0m  [1m[35mCREATE  INDEX  "index_event_tickets_on_event_id" ON "event_tickets" USING btree ("event_id")[0m
+  [1m[35m (165.3ms)[0m  [1m[35mCREATE TABLE "event_types" ("id" serial primary key, "nombre" character varying, "descripcion" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (226.1ms)[0m  [1m[35mCREATE TABLE "events" ("id" serial primary key, "nombre" character varying, "ubicacion" character varying, "descripcion" character varying, "publico" boolean, "posposiciones" integer, "codigo" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "user_id" integer, "event_category_id" integer, "event_type_id" integer)[0m
+  [1m[35m (134.8ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_event_category_id" ON "events" USING btree ("event_category_id")[0m
+  [1m[35m (69.3ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_event_type_id" ON "events" USING btree ("event_type_id")[0m
+  [1m[35m (447.6ms)[0m  [1m[35mCREATE  INDEX  "index_events_on_user_id" ON "events" USING btree ("user_id")[0m
+  [1m[35m (187.6ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "g_provider" character varying, "g_uid" character varying, "g_token" character varying, "g_expires_at" integer, "g_expires" boolean, "g_refresh_token" character varying, "f_provider" character varying, "f_uid" character varying, "f_name" character varying, "f_email" character varying, "g_email" character varying)[0m
+  [1m[35m (88.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users" USING btree ("email")[0m
+  [1m[35m (105.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users" USING btree ("reset_password_token")[0m
+  [1m[35m (25.9ms)[0m  [1m[35mALTER TABLE "event_comments" ADD CONSTRAINT "fk_rails_8a51827e60"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (6.3ms)[0m  [1m[35mALTER TABLE "event_comments" ADD CONSTRAINT "fk_rails_ecc9a36a75"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (2.1ms)[0m  [1m[35mALTER TABLE "event_dates" ADD CONSTRAINT "fk_rails_261ec9f0f8"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (2.7ms)[0m  [1m[35mALTER TABLE "event_subscriptions" ADD CONSTRAINT "fk_rails_570823d7e3"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "event_subscriptions" ADD CONSTRAINT "fk_rails_5fbb25ac5c"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (3.6ms)[0m  [1m[35mALTER TABLE "event_tickets" ADD CONSTRAINT "fk_rails_4f36be16a4"
+FOREIGN KEY ("event_id")
+  REFERENCES "events" ("id")
+[0m
+  [1m[35m (4.0ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_a0b385fce3"
+FOREIGN KEY ("event_category_id")
+  REFERENCES "event_categories" ("id")
+[0m
+  [1m[35m (35.7ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_75f14fef31"
+FOREIGN KEY ("event_type_id")
+  REFERENCES "event_types" ("id")
+[0m
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "events" ADD CONSTRAINT "fk_rails_0cb5590091"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (427.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20190226185428)[0m
+  [1m[35m (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20190217181804),
+(2019022001810),
+(20190222003201),
+(20190222003303),
+(20190222003645),
+(20190222004055),
+(20190222004719),
+(20190222005257),
+(20190222005406),
+(20190223221956),
+(20190223222103),
+(20190223222224),
+(20190223222334),
+(20190223222535),
+(20190223223619),
+(20190223224347),
+(20190223224439),
+(20190225200450),
+(20190225200641);
+
+[0m
+  [1m[35m (271.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.9ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2019-03-01 06:47:49.823765"], ["updated_at", "2019-03-01 06:47:49.823765"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.5ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = $1, "updated_at" = $2 WHERE "ar_internal_metadata"."key" = $3[0m  [["value", "test"], ["updated_at", "2019-03-01 06:47:49.831593"], ["key", "environment"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (9.1ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "usuario@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (6.7ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "usuario@gmail.com"], ["encrypted_password", "$2a$11$8mTYw8ODZwxZ2rbClvBGYu3vd3Mq1vTGa3yNFzxwydtX8JJahrRNa"], ["created_at", "2019-03-01 06:47:50.888610"], ["updated_at", "2019-03-01 06:47:50.888610"]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "juan@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "juan@gmail.com"], ["encrypted_password", "$2a$11$FGUZmc0PgdhJup0roDUDYe74QZuLIT.hcEUunZw/aWCQAho/XAeXG"], ["created_at", "2019-03-01 06:47:51.210126"], ["updated_at", "2019-03-01 06:47:51.210126"]]
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "carlos@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "carlos@gmail.com"], ["encrypted_password", "$2a$11$apYW030J1c5kK0bM2k7R6edw5gl5M9SHuS1lIK68l8TNK31QrXYqS"], ["created_at", "2019-03-01 06:47:51.462591"], ["updated_at", "2019-03-01 06:47:51.462591"]]
+  [1m[35m (470.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "pepe@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "pepe@gmail.com"], ["encrypted_password", "$2a$11$tv5xijs9KvHZ6GI2hsVMUu73zWms74Wber8gMG9CvVsY6l2NXRnoK"], ["created_at", "2019-03-01 06:47:52.145798"], ["updated_at", "2019-03-01 06:47:52.145798"]]
+  [1m[35m (2.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "marcos@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "marcos@gmail.com"], ["encrypted_password", "$2a$11$imz2Rndl7kyJsTRTey46b.S7aKI5dW/tJZv/JpX19J7/5JULMoTDW"], ["created_at", "2019-03-01 06:47:52.481638"], ["updated_at", "2019-03-01 06:47:52.481638"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.8ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Música, Concierto"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.502361"], ["updated_at", "2019-03-01 06:47:52.502361"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Cine, Teatro"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.510843"], ["updated_at", "2019-03-01 06:47:52.510843"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Ciencias, Tecnología"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.525963"], ["updated_at", "2019-03-01 06:47:52.525963"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Moda y Belleza"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.528935"], ["updated_at", "2019-03-01 06:47:52.528935"]]
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.5ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Economía, Finanzas"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.536630"], ["updated_at", "2019-03-01 06:47:52.536630"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Religión y Espiritualidad"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.546054"], ["updated_at", "2019-03-01 06:47:52.546054"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "event_categories" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Deporte y Salud"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.548648"], ["updated_at", "2019-03-01 06:47:52.548648"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (4.9ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Conferencia"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.580598"], ["updated_at", "2019-03-01 06:47:52.580598"]]
+  [1m[35m (2.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Fiesta o Reunión Social"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.628018"], ["updated_at", "2019-03-01 06:47:52.628018"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Juegos, Competencia"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.633291"], ["updated_at", "2019-03-01 06:47:52.633291"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Seminario, Charla"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.635511"], ["updated_at", "2019-03-01 06:47:52.635511"]]
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.2ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Feria"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.647329"], ["updated_at", "2019-03-01 06:47:52.647329"]]
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Festival"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.657510"], ["updated_at", "2019-03-01 06:47:52.657510"]]
+  [1m[35m (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[32mINSERT INTO "event_types" ("nombre", "descripcion", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["nombre", "Acto de graduación"], ["descripcion", ""], ["created_at", "2019-03-01 06:47:52.667642"], ["updated_at", "2019-03-01 06:47:52.667642"]]
+  [1m[35m (2.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.5ms)[0m  [1m[32mINSERT INTO "events" ("nombre", "ubicacion", "descripcion", "publico", "posposiciones", "created_at", "updated_at", "user_id", "event_category_id", "event_type_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["nombre", "Seminario de informática"], ["ubicacion", "Avda. Caballero"], ["descripcion", "Seminario dirigido a estudiantes y profesionales en el area de informática"], ["publico", "t"], ["posposiciones", 0], ["created_at", "2019-03-01 06:47:52.876468"], ["updated_at", "2019-03-01 06:47:52.876468"], ["user_id", 1], ["event_category_id", 3], ["event_type_id", 4]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "events" ("nombre", "ubicacion", "descripcion", "publico", "posposiciones", "created_at", "updated_at", "user_id", "event_category_id", "event_type_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["nombre", "Seminario de tecnología"], ["ubicacion", "Avda. Gral. Artigas"], ["descripcion", "Seminario dirigido a estudiantes y profesionales en el area de informática"], ["publico", "t"], ["posposiciones", 0], ["created_at", "2019-03-01 06:47:52.881938"], ["updated_at", "2019-03-01 06:47:52.881938"], ["user_id", 1], ["event_category_id", 3], ["event_type_id", 4]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "events" ("nombre", "ubicacion", "descripcion", "publico", "posposiciones", "created_at", "updated_at", "user_id", "event_category_id", "event_type_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["nombre", "Seminario de robotica"], ["ubicacion", "Avda. Irrazabal"], ["descripcion", "Seminario dirigido a estudiantes y profesionales en el area de informática"], ["publico", "t"], ["posposiciones", 0], ["created_at", "2019-03-01 06:47:52.885424"], ["updated_at", "2019-03-01 06:47:52.885424"], ["user_id", 1], ["event_category_id", 3], ["event_type_id", 4]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (4.3ms)[0m  [1m[32mINSERT INTO "events" ("nombre", "ubicacion", "descripcion", "publico", "posposiciones", "created_at", "updated_at", "user_id", "event_category_id", "event_type_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["nombre", "Seminario de IA"], ["ubicacion", "Avda. Irrazabal"], ["descripcion", "Seminario dirigido a estudiantes y profesionales en el area de informática"], ["publico", "t"], ["posposiciones", 0], ["created_at", "2019-03-01 06:47:52.890079"], ["updated_at", "2019-03-01 06:47:52.890079"], ["user_id", 1], ["event_category_id", 3], ["event_type_id", 4]]
+  [1m[35m (4.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.1ms)[0m  [1m[32mINSERT INTO "event_dates" ("fecha_inicio", "fecha_fin", "created_at", "updated_at", "event_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["fecha_inicio", "2019-03-23 00:00:00"], ["fecha_fin", "2019-03-23 00:00:00"], ["created_at", "2019-03-01 06:47:52.947111"], ["updated_at", "2019-03-01 06:47:52.947111"], ["event_id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "event_dates" ("fecha_inicio", "fecha_fin", "created_at", "updated_at", "event_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["fecha_inicio", "2019-06-06 00:00:00"], ["fecha_fin", "2019-06-07 00:00:00"], ["created_at", "2019-03-01 06:47:52.959110"], ["updated_at", "2019-03-01 06:47:52.959110"], ["event_id", 2]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "event_dates" ("fecha_inicio", "fecha_fin", "created_at", "updated_at", "event_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["fecha_inicio", "2019-09-14 00:00:00"], ["fecha_fin", "2019-09-19 00:00:00"], ["created_at", "2019-03-01 06:47:52.962249"], ["updated_at", "2019-03-01 06:47:52.962249"], ["event_id", 3]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  [1m[32mINSERT INTO "event_dates" ("fecha_inicio", "fecha_fin", "created_at", "updated_at", "event_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["fecha_inicio", "2019-12-08 00:00:00"], ["fecha_fin", "2019-12-10 00:00:00"], ["created_at", "2019-03-01 06:47:52.965187"], ["updated_at", "2019-03-01 06:47:52.965187"], ["event_id", 4]]
+  [1m[35m (2.5ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/events/new" for 127.0.0.1 at 2019-03-01 03:48:47 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.8ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by EventsController#new as HTML
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 401 Unauthorized in 221ms (ActiveRecord: 7.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2019-03-01 03:48:48 -0300
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/_base
+  Rendered devise/sessions/new.html.erb within layouts/_base (485.8ms)
+Completed 500 Internal Server Error in 789ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionView::Template::Error (Unknown syntax name 'ruby/2.6.0'. Forgot to add it to Regexp::Syntax::VERSIONS?):
+    51:       <div class="row">
+    52:         <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+    53:           <div class="card card-signup">
+    54:              <%= form_for(resource, as: resource_name, url: session_path(resource_name),validate: true,class: "form" ) do |f| %>
+    55: 
+    56:              <div class="header header-primary text-center">
+    57:                 <h4>Iniciar Sesión</h4>
+  
+app/views/devise/sessions/new.html.erb:54:in `_app_views_devise_sessions_new_html_erb___3493669661209335604_70368523736640'
+  Rendering /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (9.2ms)
+  Rendering /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (7.5ms)
+  Rendering /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (18.9ms)
+  Rendered /home/martin/.rvm/gems/ruby-2.6.0/gems/actionpack-5.0.7.1/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (499.3ms)

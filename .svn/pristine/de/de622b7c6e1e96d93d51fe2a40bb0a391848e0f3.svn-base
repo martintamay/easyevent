@@ -1,0 +1,16 @@
+
+// Place all the styles related to the Explore controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+h1 small{
+	color: #fb3232;
+}
+
+.thumbnail{
+	margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
